@@ -43,6 +43,24 @@ def get_collection(collection):
     return df
 
 
+def get_tipranks_stocks(score):
+    """
+
+    :param score: from 1 to 5 (probably maps to 1-10 on the tipranks website)
+    :return: list of 20 stocks from tipranks with requested score
+    """
+
+    url = f'https://www.tipranks.com/api/Screener/GetStocks/?tipranksScore={score}'
+    x = requests.get(url)
+    y = json.loads(x.text)
+
+    symbols = []
+    for i in range(20):
+        symbols.append(y['data'][i]['ticker'])
+
+    return symbols
+
+
 if __name__ == "__main__":
 
     #df = get_top_movers()
@@ -51,5 +69,8 @@ if __name__ == "__main__":
     #df = get_most_popular()
     #print(df.Symbol.values)
 
-    df = get_collection('etf')
-    print(df.Symbol.values)
+    #df = get_collection('etf')
+    #print(df.Symbol.values)
+
+    symbols = get_tipranks_stocks(5)
+    print(symbols)
